@@ -38,23 +38,43 @@ public class MyRESTController {
 
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ExceptionInformation> handleException(NoSuchEmployeeException exception){
 
-        ExceptionInformation exceptionInformation = new ExceptionInformation();
+    @PostMapping("/employees")
+    public Employee addNewEmployee(@RequestBody Employee employee){
 
-        exceptionInformation.setInformation(exception.getMessage());
-
-        return new ResponseEntity<>(exceptionInformation, HttpStatus.NOT_FOUND);
+        employeeService.saveEmployee(employee);
+        return employee;
 
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ExceptionInformation> handleException(Exception exception){
-        ExceptionInformation exceptionInformation = new ExceptionInformation();
-        exceptionInformation.setInformation(exception.getMessage());
 
-        return new ResponseEntity<>(exceptionInformation, HttpStatus.BAD_REQUEST);
+
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee employee){
+
+        employeeService.saveEmployee(employee);
+
+        return employee;
+
+    }
+
+
+    @DeleteMapping("/employees/{id}")
+    public String deleteEmployee(@PathVariable int id){
+
+        Employee employee = employeeService.getEmployee(id);
+
+        if(employee == null){
+            throw new NoSuchEmployeeException("Employee with id " + id + " does not exist");
+        }
+
+
+        employeeService.deleteEmployee(id);
+
+        String message = "Employee with id " + id + " was deleted";
+
+        return message;
+
     }
 
 
